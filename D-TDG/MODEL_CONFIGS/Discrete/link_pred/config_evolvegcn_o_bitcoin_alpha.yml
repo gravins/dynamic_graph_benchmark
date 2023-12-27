@@ -1,0 +1,112 @@
+# Dataset and Splits
+data_root: DATA
+dataset_class: datasets.link_prediction.BitcoinAlphaDatasetInterface
+dataset_name:  bitcoin_alpha
+data_splits_file:  DATA_SPLITS/bitcoin_alpha/bitcoin_alpha_outer1_inner5.splits
+
+
+# Hardware
+device:  cpu
+max_cpus: 90
+max_gpus: 0
+gpus_per_task: 0
+
+
+# Data Loading
+dataset_getter: pydgn.data.provider.SingleGraphSequenceDataProvider
+data_loader:
+  class_name: torch.utils.data.DataLoader
+  args:
+    num_workers : 0
+    pin_memory: False
+
+
+# Reproducibility
+seed: 42
+
+
+# Experiment
+result_folder: RESULTS
+exp_name: bitcoin_alpha_evolvegcn_o
+experiment: pydgn.experiment.supervised_task.SupervisedTask
+higher_results_are_better: True
+evaluate_every: 1
+final_training_runs: 5
+
+
+# Temporal info
+reset_eval_model_hidden_state: False  # do not reset hidden state of model between training/validation/test inference. Can be useful works for single graph sequence.
+# If set to true, consider training/validation/test sequence as independent.
+
+
+grid:
+  supervised_config:
+    model: models.discrete_model.EvolveGCN_O_Model
+    checkpoint: True
+    shuffle: False
+    batch_size: 32  # one timestep at a time in the batch
+    epochs: 1000
+
+    # Model specific arguments #
+    dim_embedding:
+      - 32
+      - 16 # This is the input dim ## best hyper-param
+      - 8
+    normalize:
+      - True
+      - False # best hyper-param
+
+    optimizer:
+      - class_name: pydgn.training.callback.optimizer.Optimizer
+        args:
+          optimizer_class_name: torch.optim.AdamW
+          lr:
+            - 0.01
+            - 0.001 # best hyper-param
+            - 0.0001
+          weight_decay: 
+            - 0.001
+            - 0.0001 # best hyper-param
+
+    # Scheduler (optional)
+    scheduler: null
+
+    # Loss metric
+    loss:
+      - metrics.BinaryClassificationLoss
+    
+    # Score metric (with an example of Multi Score)
+    scorer:
+      - class_name: pydgn.training.callback.metric.MultiScore
+        args:
+          main_scorer: metrics.RocAucScore
+          my_second_metric: metrics.F1Score
+          my_third_metric: metrics.AccuracyScore
+          my_fourth_metric: metrics.BalancedAccuracyScore
+
+    # Readout (optional)
+    readout: models.predictor.LinearLinkPredictor
+
+    # Training engine
+    engine:
+      - class_name: pydgn.training.engine.GraphSequenceTrainingEngine
+        args:
+          engine_callback: pydgn.training.callback.engine_callback.TemporalEngineCallback
+
+    # Gradient clipper (optional)
+    gradient_clipper: null
+
+    # Early stopper (optional, with an example of "patience" early stopping on the validation score)
+    early_stopper:
+      - class_name:
+          - pydgn.training.callback.early_stopping.PatienceEarlyStopper
+        args:
+          patience:
+            - 50
+          monitor: validation_main_score
+          mode: max  
+          checkpoint: True  # store the best checkpoint
+
+    # Plotter of metrics
+    plotter: pydgn.training.callback.plotter.Plotter
+    

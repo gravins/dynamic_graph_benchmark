@@ -1,0 +1,21 @@
+ 
+splitter:  
+  root: DATA_SPLITS/
+  class_name: pydgn.data.splitter.SingleGraphSequenceSplitter
+  args:
+    n_outer_folds: 1  # must be 1 in this case
+    n_inner_folds: 5
+    seed: 9
+    stratify: False
+    shuffle: False
+    inner_val_ratio: 0.15
+    outer_val_ratio: 0.15
+    test_ratio: 0.15
+dataset:
+  root: DATA/
+  class_name: datasets.node_prediction.PemsBayDatasetInterface
+  args:
+    root: DATA/
+    name: pems_bay
+    num_timesteps_in: 1
+    num_timesteps_out: 1

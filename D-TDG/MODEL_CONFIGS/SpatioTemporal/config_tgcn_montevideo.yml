@@ -1,0 +1,109 @@
+# Dataset and Splits
+data_root: DATA
+dataset_class: datasets.node_prediction.MontevideoBusDatasetInterface
+dataset_name:  montevideo
+data_splits_file:  DATA_SPLITS/montevideo/montevideo_outer1_inner5.splits
+
+
+# Hardware
+device:  cpu
+max_cpus: 1
+max_gpus: 0
+gpus_per_task: 0
+
+
+# Data Loading
+dataset_getter: pydgn.data.provider.SingleGraphSequenceDataProvider
+data_loader:
+  class_name: torch.utils.data.DataLoader
+  args:
+    num_workers : 0
+    pin_memory: False
+
+
+# Reproducibility
+seed: 42
+
+
+# Experiment
+result_folder: RESULTS
+exp_name: montevideo_tgcn
+experiment: pydgn.experiment.supervised_task.SupervisedTask
+higher_results_are_better: False
+evaluate_every: 1
+final_training_runs: 5
+
+
+# Temporal info
+reset_eval_model_hidden_state: False  # do not reset hidden state of model between training/validation/test inference. Can be useful works for single graph sequence.
+# If set to true, consider training/validation/test sequence as independent.
+
+
+grid:
+  supervised_config:
+    model: models.spatio_temporal_model.TGCNModel
+    checkpoint: True
+    shuffle: True
+    batch_size: 32  # one timestep at a time in the batch
+    epochs: 1000
+
+    # Model specific arguments #
+    dim_embedding:
+      - 8 # best hyper-param
+      - 4
+      - 2
+      - 1 # This is the input dim
+
+
+    optimizer:
+      - class_name: pydgn.training.callback.optimizer.Optimizer
+        args:
+          optimizer_class_name: torch.optim.AdamW
+          lr:
+            - 0.01 # best hyper-param
+            - 0.001
+            - 0.0001
+          weight_decay: 
+            - 0.001 # best hyper-param
+            - 0.0001
+
+    # Scheduler (optional)
+    scheduler: null
+
+    # Loss metric
+    loss:
+      - pydgn.training.callback.metric.MeanAverageError
+      
+    # Score metric (with an example of Multi Score)
+    scorer:
+      - class_name: pydgn.training.callback.metric.MultiScore
+        args:
+          main_scorer: pydgn.training.callback.metric.MeanAverageError
+          my_second_metric: pydgn.training.callback.metric.MeanSquareError
+
+    # Readout (optional)
+    readout: pydgn.model.readout.node_readout.LinearNodeReadout
+
+    # Training engine
+    engine:
+      - class_name: pydgn.training.engine.GraphSequenceTrainingEngine
+        args:
+          engine_callback: pydgn.training.callback.engine_callback.TemporalEngineCallback
+
+    # Gradient clipper (optional)
+    gradient_clipper: null
+
+    # Early stopper (optional, with an example of "patience" early stopping on the validation score)
+    early_stopper:
+      - class_name:
+          - pydgn.training.callback.early_stopping.PatienceEarlyStopper
+        args:
+          patience:
+            - 50
+         
+          monitor: validation_main_score
+          mode: min  
+          checkpoint: True  # store the best checkpoint
+
+    # Plotter of metrics
+    plotter: pydgn.training.callback.plotter.Plotter
