@@ -6,5 +6,5 @@ Official code repository for our paper Deep learning for dynamic graphs: models 
 ## Running the experiments
 To reproduce the experiments please refer to:
 
-- [DTDG/README.md](https://github.com/gravins/dynamic_graph_benchmark/tree/master/DTDG) to reproduce the experiments on the *Discrete-Time Dynamic Graph* domain. 
-- [CTDG/README.md](https://github.com/gravins/dynamic_graph_benchmark/tree/master/CTDG) to reproduce the experiments on the *Continuous-Time Dynamic Graph* domain. 
+- [DTDG/README.md](https://github.com/gravins/dynamic_graph_benchmark/tree/main/D-TDG) to reproduce the experiments on the *Discrete-Time Dynamic Graph* domain. 
+- [CTDG/README.md](https://github.com/gravins/dynamic_graph_benchmark/tree/main/C-TDG) to reproduce the experiments on the *Continuous-Time Dynamic Graph* domain. 
