@@ -21,19 +21,13 @@ conda install jemalloc -c conda-forge
 ## How to reproduce our results
 To reproduce our results:
 
-1) download and untar the DATA folder:
-```
-wget https:\\
-tar -xzvf DATA.tar.gz
-```
-
-2) build the dataset and data splits
+1) build the dataset and data splits
 ```
 export data_config=DATA_CONFIGS/spatio_temporal/config_montevideo.yml
 pydgn-dataset --config-file $data_config
 ```
 
-3) run the training
+2) run the training
 ```
 # Jemalloc init
 export MALLOC_CONF=oversize_threshold:1,background_thread:true,metadata_thp:auto,dirty_decay_ms:9000000000,muzzy_decay_ms:9000000000
