@@ -26,6 +26,7 @@ To reproduce our results:
 export data_config=DATA_CONFIGS/spatio_temporal/config_montevideo.yml
 pydgn-dataset --config-file $data_config
 ```
+***Pre-processed data can be found [here](https://www.dropbox.com/scl/fi/4dx1eqkmu5b3v899rypw8/DATA.tar.xz?rlkey=1hop1l09pmk3o37tygd2gdxqt&dl=0). To extract the tar.xz, please run: ```tar -xvf DATA.tar.xz```***
 
 2) run the training
 ```
