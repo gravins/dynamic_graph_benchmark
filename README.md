@@ -1,6 +1,6 @@
 # Deep learning for dynamic graphs: models and benchmarks
 
-Official code repository for our paper [***"Deep learning for dynamic graphs: models and benchmarks"***](https://ieeexplore.ieee.org/document/10490120).
+Official code repository for our paper [***"Deep learning for dynamic graphs: models and benchmarks"***](https://ieeexplore.ieee.org/document/10490120) accepted at the IEEE Transactions on Neural Networks and Learning Systems.
 
 Please consider citing us
 
@@ -18,7 +18,7 @@ Please consider citing us
 
 
 
-## Running the experiments
+## How to run the experiments
 To reproduce the experiments please refer to:
 
 - [D-TDG/README.md](https://github.com/gravins/dynamic_graph_benchmark/tree/main/D-TDG) to reproduce the experiments on the *Discrete-Time Dynamic Graph* domain. 
