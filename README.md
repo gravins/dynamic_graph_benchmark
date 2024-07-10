@@ -1,6 +1,21 @@
 # Deep learning for dynamic graphs: models and benchmarks
 
-Official code repository for our paper ***"Deep learning for dynamic graphs: models and benchmarks"***.
+Official code repository for our paper [***"Deep learning for dynamic graphs: models and benchmarks"***](https://ieeexplore.ieee.org/document/10490120).
+
+Please consider citing us
+
+	@article{gravina2024benchmark,
+	    author={Gravina, Alessio and Bacciu, Davide},
+        journal={IEEE Transactions on Neural Networks and Learning Systems}, 
+        title={{Deep Learning for Dynamic Graphs: Models and Benchmarks}}, 
+        year={2024},
+        volume={},
+        number={},
+        pages={1-14},
+        keywords={Surveys;Representation learning;Benchmark testing;Laplace equations;Graph neural networks;Message passing;Convolution;Benchmark;deep graph networks (DGNs);dynamic graphs;graph neural networks (GNNs);survey;temporal graphs},
+        doi={10.1109/TNNLS.2024.3379735}
+	}
+
 
 
 ## Running the experiments
